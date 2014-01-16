@@ -5,19 +5,18 @@ Cylon.robot({
   device: { name: 'sphero', driver: 'sphero' },
  
 work: function(my) {
-    var on = false;
-    every((1).second(), function() {
-      // flash light
-      if (on) {
-        my.sphero.setColor("blue");
-        on = false;
-      } else {
-        my.sphero.setColor('black');
-        on = true;
+    var deg = 0;
+    every((2).second(), function() {
+      if (deg >= 360){
+        deg = 0;
       }
- 
-      // Roll in a random direction
-      my.sphero.roll(60, Math.floor(Math.random() * 360));
+      console.log(deg);
+      my.sphero.roll(100, deg, 1);
+      deg += 90;
+    });
+    my.sphero.setColor('blue');
+    my.sphero.on('collision', function(){
+      this.setColor('red');
     });
   }
 });
